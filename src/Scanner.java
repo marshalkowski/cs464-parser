@@ -203,7 +203,6 @@ public class Scanner{
     while(currentChar == ' ' || currentChar == '\n' || currentChar == '\r')
       scanSeparator();
     currentKind = scanToken();
-    System.out.println(currentSpelling.toString());  //TODO: Remove later
     return new Token(currentKind, currentSpelling.toString(), line);
   }
 
