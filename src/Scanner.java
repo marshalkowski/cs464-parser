@@ -113,19 +113,20 @@ public class Scanner{
   }
 
   private byte scanToken(){
+      byte nextToken;
     if (isLetter(currentChar))
     {
         do {
             takeIt();
         } while(isLetter(currentChar));
-        return Token.IDENTIFIER; //return as IDENTIFIER
+        nextToken = Token.IDENTIFIER; //return as IDENTIFIER
     }
     else if (isDigit(currentChar))
     {
         do {
             takeIt();
         } while (isDigit(currentChar));
-        return Token.LITERAL; //return as LITERAL
+        nextToken = Token.LITERAL; //return as LITERAL
     }
     else
     {
@@ -133,34 +134,59 @@ public class Scanner{
             case ('('): takeIt(); return Token.LPAREN;
             case (')'): takeIt(); return Token.RPAREN;
             case ('+'):
-            case ('-'):
             case ('*'):
             case ('/'):
             case ('='):
                 takeIt();
-                return Token.OPERATOR;
+                nextToken = Token.OPERATOR;
+                break;
+            case ('-'):
+                takeIt();
+                if (isDigit(currentChar))
+                {
+                    while (isDigit(currentChar))
+                    {
+                        takeIt();
+                    }
+                    nextToken = Token.LITERAL;
+                }
+                else
+                {
+                    nextToken = Token.OPERATOR;
+                }
+                break;
             case ('<'):
                 takeIt();
                 if (currentChar == '=')
                     takeIt();
-                return Token.OPERATOR;
+                nextToken = Token.OPERATOR;
+                break;
             case ('>'):
                 takeIt();
                 if (currentChar == '=')
                     takeIt();
-                return Token.OPERATOR;
+                nextToken = Token.OPERATOR;
+                break;
             case ('!'):
                 takeIt();
                 if (currentChar != '=')
                 {
-                    return Token.NOTHING;
+                    nextToken = Token.NOTHING;
                 }
                 takeIt();
-                return Token.OPERATOR;
+                nextToken = Token.OPERATOR;
+                break;
+            case ('\u0000'):
+                takeIt();
+                nextToken = Token.EOT;
+                break;
             default:
-                return Token.NOTHING;
+                takeIt();
+                nextToken = Token.NOTHING;
+                break;
         }
     }
+    return nextToken;
   }
 
   private void scanSeparator(){
@@ -177,6 +203,7 @@ public class Scanner{
     while(currentChar == ' ' || currentChar == '\n' || currentChar == '\r')
       scanSeparator();
     currentKind = scanToken();
+    System.out.println(currentSpelling.toString());  //TODO: Remove later
     return new Token(currentKind, currentSpelling.toString(), line);
   }
 
