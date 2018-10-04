@@ -113,10 +113,54 @@ public class Scanner{
   }
 
   private byte scanToken(){
-    switch(currentChar){
-      //Your switch
+    if (isLetter(currentChar))
+    {
+        do {
+            takeIt();
+        } while(isLetter(currentChar));
+        return Token.IDENTIFIER; //return as IDENTIFIER
     }
-    return 5;                 //After you replace this switch with your, remove this line.
+    else if (isDigit(currentChar))
+    {
+        do {
+            takeIt();
+        } while (isDigit(currentChar));
+        return Token.LITERAL; //return as LITERAL
+    }
+    else
+    {
+        switch (currentChar){
+            case ('('): takeIt(); return Token.LPAREN;
+            case (')'): takeIt(); return Token.RPAREN;
+            case ('+'):
+            case ('-'):
+            case ('*'):
+            case ('/'):
+            case ('='):
+                takeIt();
+                return Token.OPERATOR;
+            case ('<'):
+                takeIt();
+                if (currentChar == '=')
+                    takeIt();
+                return Token.OPERATOR;
+            case ('>'):
+                takeIt();
+                if (currentChar == '=')
+                    takeIt();
+                return Token.OPERATOR;
+            case ('!'):
+                takeIt();
+                if (currentChar != '=')
+                {
+                    return Token.NOTHING;
+                }
+                takeIt();
+                return Token.OPERATOR;
+            default:
+                return Token.NOTHING;
+        }
+    }
   }
 
   private void scanSeparator(){

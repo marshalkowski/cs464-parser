@@ -18,6 +18,8 @@ Operation --> "+" |"-" | "*" | "/" | "<" | "<=" | ">" | ">=" | "=" | "!=" | "or"
 Note: Treat Identifier and Literal as terminal symbols. Every symbol inside " and " is a terminal symbol. The rest are non terminals.
 
 */
+import java.io.*;
+
 public class Parser{
   private Token currentToken;
   Scanner scanner;
@@ -46,6 +48,11 @@ public class Parser{
 
   //Program" --> "("Sequence State")".
   private void parseProgram() {
+    while (currentToken.kind != Token.EOT)
+    {
+      System.out.println("Line: " + currentToken.line + ", spelling = [" + currentToken.spelling + "], kind = " + currentToken.kind);
+
+    }
   }
 
   //Sequence --> "("Statements")".
