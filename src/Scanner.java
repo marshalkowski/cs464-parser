@@ -170,9 +170,10 @@ public class Scanner{
                 takeIt();
                 if (currentChar != '=') {
                     nextToken = Token.NOTHING;
+                } else {
+                    takeIt();
+                    nextToken = Token.OPERATOR;
                 }
-                takeIt();
-                nextToken = Token.OPERATOR;
                 break;
             case ('\u0000'):
                 takeIt();
@@ -201,7 +202,6 @@ public class Scanner{
     while(currentChar == ' ' || currentChar == '\n' || currentChar == '\r')
       scanSeparator();
     currentKind = scanToken();
-    System.out.println("Lexeme: " + currentSpelling + ", Token: " + currentKind);
     return new Token(currentKind, currentSpelling.toString(), line);
   }
 

@@ -25,15 +25,32 @@ public class Parser{
 
   private void accept(byte expectedKind) {
     if (currentToken.kind == expectedKind)
-      currentToken = scanner.scan();
-    else
-      new Error("Syntax error: " + currentToken.spelling + " is not expected.",
+    {
+        currentToken = scanner.scan();
+        PrintScannedToken();
+    }
+
+    else {
+        new Error("Syntax error: " + currentToken.spelling + " is not expected.",
                 currentToken.line);
+    }
   }
 
   private void acceptIt() {
-    currentToken = scanner.scan();
+      currentToken = scanner.scan();
+      PrintScannedToken();
   }
+
+    private void PrintScannedToken(){
+      if (currentToken.kind != Token.NOTHING) {
+          System.out.println("Line: " + currentToken.line + ", spelling = [" +
+                  currentToken.spelling + "], kind = " + currentToken.kind);
+      }
+      else
+      {
+          System.out.println("Line " + currentToken.line + ": wrong token " + currentToken.spelling);
+      }
+    }
 
   public void parse() {
     SourceFile sourceFile = new SourceFile();
@@ -47,6 +64,7 @@ public class Parser{
 
   //Program" --> "("Sequence State")".
   private void parseProgram() {
+      //This code parses the file for correct grammar
       //System.out.println("Enter program");
       accept(Token.LPAREN);
       parseSequence();
@@ -57,17 +75,7 @@ public class Parser{
       //This code prints the scanner results but does not parse the grammar
 //    while (currentToken.kind != Token.EOT)
 //    {
-//        if (currentToken.kind == Token.NOTHING) {
-//          System.out.println("Line " + currentToken.line + ": wrong token " + currentToken.spelling);
-//          if (currentToken.spelling == "?")
-//          {
-//            System.exit(3);
-//          }
-//        }
-//        else {
-//            System.out.println("Line: " + currentToken.line + ", spelling = [" + currentToken.spelling + "], kind = " + currentToken.kind);
-//        }
-//        currentToken = scanner.scan();
+//        acceptIt();
 //    }
   }
 
