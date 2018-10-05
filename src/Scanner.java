@@ -128,11 +128,14 @@ public class Scanner{
         } while (isDigit(currentChar));
         nextToken = Token.LITERAL; //return as LITERAL
     }
-    else
-    {
-        switch (currentChar){
-            case ('('): takeIt(); return Token.LPAREN;
-            case (')'): takeIt(); return Token.RPAREN;
+    else {
+        switch (currentChar) {
+            case ('('):
+                takeIt();
+                return Token.LPAREN;
+            case (')'):
+                takeIt();
+                return Token.RPAREN;
             case ('+'):
             case ('*'):
             case ('/'):
@@ -142,16 +145,12 @@ public class Scanner{
                 break;
             case ('-'):
                 takeIt();
-                if (isDigit(currentChar))
-                {
-                    while (isDigit(currentChar))
-                    {
+                if (isDigit(currentChar)) {
+                    while (isDigit(currentChar)) {
                         takeIt();
                     }
                     nextToken = Token.LITERAL;
-                }
-                else
-                {
+                } else {
                     nextToken = Token.OPERATOR;
                 }
                 break;
@@ -169,8 +168,7 @@ public class Scanner{
                 break;
             case ('!'):
                 takeIt();
-                if (currentChar != '=')
-                {
+                if (currentChar != '=') {
                     nextToken = Token.NOTHING;
                 }
                 takeIt();
@@ -203,6 +201,7 @@ public class Scanner{
     while(currentChar == ' ' || currentChar == '\n' || currentChar == '\r')
       scanSeparator();
     currentKind = scanToken();
+    System.out.println("Lexeme: " + currentSpelling + ", Token: " + currentKind);
     return new Token(currentKind, currentSpelling.toString(), line);
   }
 

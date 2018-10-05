@@ -54,6 +54,7 @@ public class Parser{
       accept(Token.RPAREN);
       //System.out.println("Exit program");
 
+      //This code prints the scanner results but does not parse the grammar
 //    while (currentToken.kind != Token.EOT)
 //    {
 //        if (currentToken.kind == Token.NOTHING) {
