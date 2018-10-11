@@ -118,7 +118,7 @@ public class Scanner{
     {
         do {
             takeIt();
-        } while(isLetter(currentChar));
+        } while(isLetter(currentChar) || isDigit(currentChar));
         nextToken = Token.IDENTIFIER; //return as IDENTIFIER
     }
     else if (isDigit(currentChar))
