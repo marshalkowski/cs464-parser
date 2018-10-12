@@ -19,6 +19,8 @@ Note: Treat Identifier and Literal as terminal symbols. Every symbol inside " an
 
 */
 
+import java.io.*;
+
 public class Parser{
   private Token currentToken;
   Scanner scanner;
@@ -53,13 +55,40 @@ public class Parser{
     }
 
   public void parse() {
-    SourceFile sourceFile = new SourceFile();
-    scanner = new Scanner(sourceFile.openFile());
-    currentToken = scanner.scan();
-    parseProgram();
+      SourceFile sourceFile = new SourceFile();
+      scanner = new Scanner(sourceFile.openFile());
+      System.out.print("Scan or parse? ");
+      System.out.flush();
+      BufferedReader rdr = new BufferedReader(new InputStreamReader(System.in));
+      String command = "";
+      try {
+          command = rdr.readLine();
+      } catch (IOException e) {
+          System.out.println(e);
+      }
+      if (command.charAt(0) == 's' || command.charAt(0) == 'S') {
+          currentToken = scanner.scan();
+          PrintScannedToken();
+          scanProgram();
+      } else if (command.charAt(0) == 'p' || command.charAt(0) == 'P'){
+          currentToken = scanner.scan();
+          PrintScannedToken();
+          parseProgram();
+      } else {
+          new Error("usage: scan or s, or parse or p", -1);
+      }
+
     if (currentToken.kind != Token.EOT)
       new Error("Syntax error: Redundant characters at the end of program.",
                 currentToken.line);
+  }
+
+  private void scanProgram() {
+    //This code prints the scanner results but does not parse the grammar
+    while (currentToken.kind != Token.EOT)
+    {
+        acceptIt();
+    }
   }
 
   //Program" --> "("Sequence State")".
@@ -71,12 +100,6 @@ public class Parser{
       parseState();
       accept(Token.RPAREN);
       //System.out.println("Exit program");
-
-      //This code prints the scanner results but does not parse the grammar
-//    while (currentToken.kind != Token.EOT)
-//    {
-//        acceptIt();
-//    }
   }
 
   //Sequence --> "("Statements")".
